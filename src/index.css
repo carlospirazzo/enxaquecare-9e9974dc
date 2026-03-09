@@ -123,3 +123,28 @@
     font-family: 'Fraunces', serif;
   }
 }
+
+@media print {
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print\:block {
+    display: block !important;
+  }
+
+  header {
+    display: none !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+    max-width: 100% !important;
+  }
+}

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { X, Pill, Trash2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Pill, Trash2, ChevronDown } from 'lucide-react';
 import type { MigraineEpisode, PainLevel } from '@/types/migraine';
-import { COMMON_SYMPTOMS, PAIN_LABELS } from '@/types/migraine';
+import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS } from '@/types/migraine';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface EpisodeFormProps {
   date: Date | null;
@@ -25,7 +25,9 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
   const [medication, setMedication] = useState('');
   const [isMenstrual, setIsMenstrual] = useState(false);
   const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [triggers, setTriggers] = useState<string[]>([]);
   const [notes, setNotes] = useState('');
+  const [triggersOpen, setTriggersOpen] = useState(false);
 
   useEffect(() => {
     if (existing) {
@@ -33,13 +35,17 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setMedication(existing.medication);
       setIsMenstrual(existing.isMenstrual);
       setSymptoms(existing.symptoms);
+      setTriggers(existing.triggers || []);
       setNotes(existing.notes);
+      setTriggersOpen((existing.triggers || []).length > 0);
     } else {
       setPainLevel('moderate');
       setMedication('');
       setIsMenstrual(false);
       setSymptoms([]);
+      setTriggers([]);
       setNotes('');
+      setTriggersOpen(false);
     }
   }, [existing, date]);
 
@@ -51,6 +57,19 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
     setSymptoms(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]);
   };
 
+  const toggleTrigger = (id: string) => {
+    setTriggers(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id]);
+  };
+
+  const handleNotesChange = (value: string) => {
+    const words = value.trim().split(/\s+/).filter(Boolean);
+    if (words.length <= 5 || value.length < notes.length) {
+      setNotes(value);
+    }
+  };
+
+  const wordCount = notes.trim() ? notes.trim().split(/\s+/).filter(Boolean).length : 0;
+
   const handleSave = () => {
     onSave({
       id: existing?.id || crypto.randomUUID(),
@@ -59,6 +78,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       medication,
       isMenstrual,
       symptoms,
+      triggers,
       notes,
     });
     onClose();
@@ -144,15 +164,48 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
             </div>
           </div>
 
+          {/* Triggers (collapsible) */}
+          <Collapsible open={triggersOpen} onOpenChange={setTriggersOpen}>
+            <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium w-full">
+              <ChevronDown className={`w-4 h-4 transition-transform ${triggersOpen ? 'rotate-180' : ''}`} />
+              Gatilhos (opcional)
+              {triggers.length > 0 && (
+                <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-auto">
+                  {triggers.length}
+                </span>
+              )}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-2">
+              <div className="flex flex-wrap gap-2">
+                {COMMON_TRIGGERS.map(({ id, label }) => (
+                  <button
+                    key={id}
+                    onClick={() => toggleTrigger(id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                      triggers.includes(id)
+                        ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                        : 'bg-muted text-muted-foreground hover:bg-accent'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
           {/* Notes */}
           <div>
             <label className="text-sm font-medium mb-2 block">Observações</label>
             <Textarea
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Outros detalhes..."
+              onChange={(e) => handleNotesChange(e.target.value)}
+              placeholder="Até 5 palavras..."
               rows={2}
             />
+            <p className={`text-xs mt-1 ${wordCount >= 5 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              {wordCount}/5 palavras
+            </p>
           </div>
 
           {/* Actions */}

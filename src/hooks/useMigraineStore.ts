@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { subMonths, format } from 'date-fns';
 import type { MigraineEpisode } from '@/types/migraine';
 
 const STORAGE_KEY = 'migraine-episodes';
@@ -6,7 +7,9 @@ const STORAGE_KEY = 'migraine-episodes';
 function loadEpisodes(): MigraineEpisode[] {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    const episodes = data ? JSON.parse(data) : [];
+    // Migrate old episodes without triggers
+    return episodes.map((e: any) => ({ ...e, triggers: e.triggers || [] }));
   } catch {
     return [];
   }
@@ -43,5 +46,11 @@ export function useMigraineStore() {
     return episodes.filter(e => e.date.startsWith(prefix));
   }, [episodes]);
 
-  return { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes };
+  const getPeriodsEpisodes = useCallback((months: number) => {
+    const now = new Date();
+    const cutoff = format(subMonths(now, months), 'yyyy-MM-dd');
+    return episodes.filter(e => e.date >= cutoff).sort((a, b) => a.date.localeCompare(b.date));
+  }, [episodes]);
+
+  return { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes, getPeriodsEpisodes };
 }
