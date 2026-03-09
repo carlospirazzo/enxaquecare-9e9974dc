@@ -4,7 +4,7 @@ export interface MigraineEpisode {
   id: string;
   date: string; // YYYY-MM-DD
   painLevel: PainLevel;
-  medication: string; // empty string = no medication
+  medications: string[]; // array of medication names
   isMenstrual: boolean;
   symptoms: string[]; // e.g. ['vertigo', 'nausea', 'vomiting', 'tinnitus', 'aura']
   triggers: string[];

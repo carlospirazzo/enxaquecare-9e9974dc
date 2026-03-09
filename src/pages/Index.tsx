@@ -45,6 +45,9 @@ const Index = () => {
             <h1 className="font-serif text-xl font-bold leading-tight">Diário de Enxaqueca</h1>
             <p className="text-xs text-muted-foreground">Registre e acompanhe seus episódios</p>
           </div>
+          <Button variant="ghost" size="icon" onClick={toggleDark} title={isDark ? 'Modo claro' : 'Modo escuro'}>
+            {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </Button>
           <Button variant="ghost" size="icon" onClick={() => navigate('/relatorio')} title="Relatório">
             <FileBarChart className="w-5 h-5" />
           </Button>

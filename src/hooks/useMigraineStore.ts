@@ -8,8 +8,12 @@ function loadEpisodes(): MigraineEpisode[] {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     const episodes = data ? JSON.parse(data) : [];
-    // Migrate old episodes without triggers
-    return episodes.map((e: any) => ({ ...e, triggers: e.triggers || [] }));
+    // Migrate old episodes
+    return episodes.map((e: any) => ({
+      ...e,
+      triggers: e.triggers || [],
+      medications: e.medications || (e.medication ? [e.medication] : []),
+    }));
   } catch {
     return [];
   }
