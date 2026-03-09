@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Pill, Trash2, ChevronDown } from 'lucide-react';
+import { Pill, Trash2, ChevronDown, Plus, X } from 'lucide-react';
 import type { MigraineEpisode, PainLevel } from '@/types/migraine';
 import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS } from '@/types/migraine';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,7 @@ interface EpisodeFormProps {
 
 export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }: EpisodeFormProps) {
   const [painLevel, setPainLevel] = useState<PainLevel>('moderate');
-  const [medication, setMedication] = useState('');
+  const [medications, setMedications] = useState<string[]>(['']);
   const [isMenstrual, setIsMenstrual] = useState(false);
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [triggers, setTriggers] = useState<string[]>([]);
@@ -32,7 +32,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
   useEffect(() => {
     if (existing) {
       setPainLevel(existing.painLevel);
-      setMedication(existing.medication);
+      setMedications(existing.medications.length > 0 ? existing.medications : ['']);
       setIsMenstrual(existing.isMenstrual);
       setSymptoms(existing.symptoms);
       setTriggers(existing.triggers || []);
@@ -40,7 +40,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setTriggersOpen((existing.triggers || []).length > 0);
     } else {
       setPainLevel('moderate');
-      setMedication('');
+      setMedications(['']);
       setIsMenstrual(false);
       setSymptoms([]);
       setTriggers([]);
@@ -70,12 +70,25 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
 
   const wordCount = notes.trim() ? notes.trim().split(/\s+/).filter(Boolean).length : 0;
 
+  const updateMedication = (index: number, value: string) => {
+    setMedications(prev => prev.map((m, i) => i === index ? value : m));
+  };
+
+  const addMedicationField = () => {
+    setMedications(prev => [...prev, '']);
+  };
+
+  const removeMedicationField = (index: number) => {
+    setMedications(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSave = () => {
+    const filteredMeds = medications.map(m => m.trim()).filter(Boolean);
     onSave({
       id: existing?.id || crypto.randomUUID(),
       date: dateStr,
       painLevel,
-      medication,
+      medications: filteredMeds,
       isMenstrual,
       symptoms,
       triggers,
@@ -119,17 +132,43 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
             </div>
           </div>
 
-          {/* Medication */}
+          {/* Medications (multiple) */}
           <div>
             <label className="text-sm font-medium mb-2 block">
               <Pill className="inline w-4 h-4 mr-1 -mt-0.5" />
-              Medicação
+              Medicações
             </label>
-            <Input
-              value={medication}
-              onChange={(e) => setMedication(e.target.value)}
-              placeholder="Ex: Sumatriptano 50mg (deixe vazio se sem medicação)"
-            />
+            <div className="space-y-2">
+              {medications.map((med, i) => (
+                <div key={i} className="flex gap-2">
+                  <Input
+                    value={med}
+                    onChange={(e) => updateMedication(i, e.target.value)}
+                    placeholder={i === 0 ? "Ex: Sumatriptano 50mg" : "Outro medicamento..."}
+                    className="flex-1"
+                  />
+                  {medications.length > 1 && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="shrink-0 text-muted-foreground hover:text-destructive"
+                      onClick={() => removeMedicationField(i)}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-primary"
+                onClick={addMedicationField}
+              >
+                <Plus className="w-3.5 h-3.5 mr-1" />
+                Adicionar medicamento
+              </Button>
+            </div>
           </div>
 
           {/* Menstrual */}

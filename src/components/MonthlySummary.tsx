@@ -27,9 +27,9 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
     episodes.forEach(e => {
       counts[e.painLevel]++;
       if (e.isMenstrual) menstrualDays++;
-      if (e.medication) {
-        medications.set(e.medication, (medications.get(e.medication) || 0) + 1);
-      }
+      (e.medications || []).forEach(med => {
+        if (med) medications.set(med, (medications.get(med) || 0) + 1);
+      });
       e.symptoms.forEach(s => {
         symptomCounts.set(s, (symptomCounts.get(s) || 0) + 1);
       });
