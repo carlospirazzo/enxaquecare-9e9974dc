@@ -39,10 +39,13 @@ const Index = () => {
           <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
             <Brain className="w-5 h-5 text-primary-foreground" />
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="font-serif text-xl font-bold leading-tight">Diário de Enxaqueca</h1>
             <p className="text-xs text-muted-foreground">Registre e acompanhe seus episódios</p>
           </div>
+          <Button variant="ghost" size="icon" onClick={() => navigate('/relatorio')} title="Relatório">
+            <FileBarChart className="w-5 h-5" />
+          </Button>
         </div>
       </header>
 
