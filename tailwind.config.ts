@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        serif: ['Fraunces', 'serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -46,6 +50,23 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        pain: {
+          none: "hsl(var(--pain-none))",
+          light: "hsl(var(--pain-light))",
+          "light-bg": "hsl(var(--pain-light-bg))",
+          moderate: "hsl(var(--pain-moderate))",
+          "moderate-bg": "hsl(var(--pain-moderate-bg))",
+          severe: "hsl(var(--pain-severe))",
+          "severe-bg": "hsl(var(--pain-severe-bg))",
+        },
+        menstrual: {
+          DEFAULT: "hsl(var(--menstrual))",
+          bg: "hsl(var(--menstrual-bg))",
+        },
+        symptom: {
+          DEFAULT: "hsl(var(--symptom))",
+          bg: "hsl(var(--symptom-bg))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
