@@ -1,15 +1,45 @@
 
 
-## Plano: Limitar observações a 5 palavras e exibi-las no resumo mensal
+## Plano: Gatilhos de Enxaqueca + Relatório Comparativo
 
-### Alterações
+### 1. Modelo de dados (`src/types/migraine.ts`)
+- Adicionar array `COMMON_TRIGGERS` com os 12 gatilhos: sono ruim, estresse, álcool, menstruação, café, jejum, mudança de clima, luz forte, cheiro forte, exercício, desidratação, barulho excessivo
+- Adicionar campo `triggers: string[]` ao `MigraineEpisode`
 
-1. **`src/components/EpisodeForm.tsx`** — Adicionar validação no campo "Observações" limitando a 5 palavras (bloquear digitação além do limite ou exibir contador/aviso).
+### 2. Formulário (`src/components/EpisodeForm.tsx`)
+- Adicionar seção colapsável "Gatilhos" (usando Collapsible) com chips selecionáveis, mesmo padrão dos sintomas
+- Adicionar estado `triggers` e incluir no `handleSave`
+- Limitar observações a 5 palavras
 
-2. **`src/components/MonthlySummary.tsx`** — Adicionar nova seção "Observações" ao final do resumo, listando cronologicamente os episódios que possuem notas preenchidas, com a data formatada e o texto da observação.
+### 3. Resumo mensal (`src/components/MonthlySummary.tsx`)
+- Adicionar seção "Top 3 Gatilhos" mostrando os 3 gatilhos mais frequentes com percentual (ocorrências/total de episódios × 100%)
+- Listar observações do mês abaixo
 
-### Detalhes técnicos
+### 4. Página de Relatório (`src/pages/Report.tsx`) — nova
+- Toggle 3/6 meses
+- Gráfico de barras empilhadas (recharts) com crises por mês
+- Seções: visão geral, medicações, sintomas, gatilhos (todos com contagem e %), correlação menstrual, observações
+- Botão "Exportar PDF" via `window.print()`
 
-- Validação por contagem de palavras via `value.trim().split(/\s+/).length` no `onChange` do `Textarea` (ou substituir por `Input` já que serão textos curtos).
-- No resumo, filtrar `episodes.filter(e => e.notes.trim())`, ordenar por data e renderizar com ícone de `StickyNote` e data formatada em pt-BR.
+### 5. Rota e navegação
+- **`src/App.tsx`**: adicionar rota `/relatorio`
+- **`src/pages/Index.tsx`**: botão "Relatório" no header
+
+### 6. Store (`src/hooks/useMigraineStore.ts`)
+- Adicionar `getPeriodsEpisodes(months: number)` para filtrar episódios dos últimos N meses
+
+### 7. CSS (`src/index.css`)
+- Regras `@media print` para exportação PDF limpa
+
+### Arquivos criados/editados
+| Arquivo | Ação |
+|---|---|
+| `src/types/migraine.ts` | Editar — triggers |
+| `src/components/EpisodeForm.tsx` | Editar — seção gatilhos + limite observações |
+| `src/components/MonthlySummary.tsx` | Editar — top 3 gatilhos + observações |
+| `src/hooks/useMigraineStore.ts` | Editar — getPeriodsEpisodes |
+| `src/pages/Report.tsx` | Criar — relatório comparativo |
+| `src/App.tsx` | Editar — rota |
+| `src/pages/Index.tsx` | Editar — link relatório |
+| `src/index.css` | Editar — @media print |
 
