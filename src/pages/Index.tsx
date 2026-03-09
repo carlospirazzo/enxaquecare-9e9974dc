@@ -2,13 +2,14 @@ import { useState, useCallback } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Brain, FileBarChart } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { MigraineCalendar } from '@/components/MigraineCalendar';
 import { EpisodeForm } from '@/components/EpisodeForm';
 import { MonthlySummary } from '@/components/MonthlySummary';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const Index = () => {
   const navigate = useNavigate();
