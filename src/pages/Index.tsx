@@ -11,6 +11,7 @@ import { MonthlySummary } from '@/components/MonthlySummary';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
