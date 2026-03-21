@@ -26,6 +26,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
   const [isMenstrual, setIsMenstrual] = useState(false);
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [triggers, setTriggers] = useState<string[]>([]);
+  const [customTrigger, setCustomTrigger] = useState('');
   const [notes, setNotes] = useState('');
   const [triggersOpen, setTriggersOpen] = useState(false);
 
