@@ -47,7 +47,6 @@ const Report = () => {
     episodes.forEach(e => {
       counts[e.painLevel]++;
       if (e.isMenstrual) menstrualDays++;
-      if (e.isMenstrual) menstrualDays++;
       (e.medications || []).forEach(med => {
         if (med) medications.set(med, (medications.get(med) || 0) + 1);
       });
