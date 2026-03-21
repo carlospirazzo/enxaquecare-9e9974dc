@@ -176,6 +176,14 @@ const Index = () => {
         onDelete={removeEpisode}
       />
 
+      {/* Data Migration Dialog */}
+      <DataMigration
+        open={migrationOpen}
+        onClose={() => setMigrationOpen(false)}
+        episodes={episodes}
+        onImport={importEpisodes}
+      />
+
       {/* Instructions Dialog */}
       <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
         <DialogContent className="max-w-md max-h-[85vh] p-0">
