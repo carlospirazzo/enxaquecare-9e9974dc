@@ -81,6 +81,7 @@ export function useSmartNotifications(episodes: MigraineEpisode[]) {
     const today = format(new Date(), 'yyyy-MM-dd');
     if (id === 'sleep') localStorage.setItem(SLEEP_REMINDER_KEY, today);
     if (id === 'inactive') localStorage.setItem(INACTIVE_REMINDER_KEY, today);
+    if (id === 'med_overuse') localStorage.setItem(MED_OVERUSE_KEY, today);
     setNotifications(prev => prev.filter(n => n.id !== id));
   }, []);
 
