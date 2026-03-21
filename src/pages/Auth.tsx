@@ -14,6 +14,7 @@ const Auth = () => {
   const [mode, setMode] = useState<Mode>('login');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
 
   // Login fields
   const [loginEmail, setLoginEmail] = useState('');
