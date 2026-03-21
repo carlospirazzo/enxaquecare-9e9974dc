@@ -45,6 +45,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setTriggersOpen((existing.triggers || []).length > 0);
       setSleep(existing.sleep || null);
       setSleepOpen(!!existing.sleep);
+      setWellbeing(existing.wellbeing || null);
+      setWellbeingOpen(!!existing.wellbeing);
     } else {
       setPainLevel('moderate');
       setMedications(['']);
