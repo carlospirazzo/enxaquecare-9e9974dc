@@ -104,7 +104,7 @@ export function useMigraineStore() {
     const row = toDbRow(episode, user.id);
     const { data, error } = await supabase
       .from('episodes')
-      .upsert(row, { onConflict: 'user_id,date' })
+      .upsert([row], { onConflict: 'user_id,date' })
       .select()
       .single();
 
