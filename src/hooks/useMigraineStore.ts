@@ -41,6 +41,15 @@ export function useMigraineStore() {
     setEpisodes(prev => prev.filter(e => e.date !== date));
   }, []);
 
+  const importEpisodes = useCallback((imported: MigraineEpisode[]) => {
+    const migrated = imported.map((e: any) => ({
+      ...e,
+      triggers: e.triggers || [],
+      medications: e.medications || (e.medication ? [e.medication] : []),
+    }));
+    setEpisodes(migrated);
+  }, []);
+
   const getEpisode = useCallback((date: string) => {
     return episodes.find(e => e.date === date);
   }, [episodes]);
