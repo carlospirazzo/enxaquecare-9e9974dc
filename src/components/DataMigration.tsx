@@ -15,6 +15,7 @@ interface DataMigrationProps {
 
 export function DataMigration({ open, onClose, episodes, onImport }: DataMigrationProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [pendingImport, setPendingImport] = useState<MigraineEpisode[] | null>(null);
 
   const handleExport = () => {
     const data = JSON.stringify(episodes, null, 2);
@@ -28,7 +29,7 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
     toast({ title: 'Dados exportados!', description: `${episodes.length} episódios salvos no arquivo.` });
   };
 
-  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -37,19 +38,24 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
       try {
         const imported = JSON.parse(ev.target?.result as string);
         if (!Array.isArray(imported)) throw new Error('Formato inválido');
-        // Basic validation
         const valid = imported.every((ep: any) => ep.date && ep.painLevel);
         if (!valid) throw new Error('Dados incompletos');
-        onImport(imported);
-        toast({ title: 'Dados importados!', description: `${imported.length} episódios restaurados.` });
-        onClose();
+        setPendingImport(imported);
       } catch {
         toast({ title: 'Erro na importação', description: 'O arquivo não contém dados válidos.', variant: 'destructive' });
       }
     };
     reader.readAsText(file);
-    // Reset input
     if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const confirmImport = () => {
+    if (pendingImport) {
+      onImport(pendingImport);
+      toast({ title: 'Dados importados!', description: `${pendingImport.length} episódios restaurados.` });
+      setPendingImport(null);
+      onClose();
+    }
   };
 
   return (
