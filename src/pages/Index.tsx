@@ -90,7 +90,7 @@ const Index = () => {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-3">
-          <img src={logo} alt="EnxaqueCare logo" className="w-9 h-9 object-contain" />
+          <img src={logoIcon} alt="EnxaqueCare logo" className="w-9 h-9 object-contain" />
           <div className="flex-1">
             <h1 className="font-serif text-xl font-bold leading-tight">EnxaqueCare</h1>
             <p className="text-xs text-muted-foreground">Registre e acompanhe seus episódios</p>
