@@ -4,11 +4,13 @@ import type { MigraineEpisode } from '@/types/migraine';
 
 const SLEEP_REMINDER_KEY = 'migraine-sleep-reminder-dismissed';
 const INACTIVE_REMINDER_KEY = 'migraine-inactive-reminder-dismissed';
+const MED_OVERUSE_KEY = 'migraine-med-overuse-dismissed';
 const INACTIVE_DAYS_THRESHOLD = 3;
+const MED_OVERUSE_DAYS_THRESHOLD = 15;
 
 interface Notification {
   id: string;
-  type: 'sleep' | 'inactive';
+  type: 'sleep' | 'inactive' | 'med_overuse';
   title: string;
   message: string;
 }
