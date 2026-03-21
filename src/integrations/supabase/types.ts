@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      episodes: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          is_menstrual: boolean
+          medications: Json
+          notes: string
+          pain_level: string
+          sleep: Json | null
+          symptoms: Json
+          triggers: Json
+          updated_at: string
+          user_id: string
+          wellbeing: Json | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          is_menstrual?: boolean
+          medications?: Json
+          notes?: string
+          pain_level: string
+          sleep?: Json | null
+          symptoms?: Json
+          triggers?: Json
+          updated_at?: string
+          user_id: string
+          wellbeing?: Json | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          is_menstrual?: boolean
+          medications?: Json
+          notes?: string
+          pain_level?: string
+          sleep?: Json | null
+          symptoms?: Json
+          triggers?: Json
+          updated_at?: string
+          user_id?: string
+          wellbeing?: Json | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string
