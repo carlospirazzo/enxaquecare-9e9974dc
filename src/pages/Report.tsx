@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { format, parseISO, subMonths, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { motion } from 'framer-motion';
-import { ArrowLeft, FileDown, AlertTriangle, Pill, Activity, Zap, Droplets, StickyNote } from 'lucide-react';
+import { ArrowLeft, FileDown, AlertTriangle, Pill, Activity, Zap, Droplets, StickyNote, Moon } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
