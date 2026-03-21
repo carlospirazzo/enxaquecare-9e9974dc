@@ -35,6 +35,10 @@ export const COMMON_TRIGGERS = [
   { id: 'exercise', label: 'Exercício' },
   { id: 'dehydration', label: 'Desidratação' },
   { id: 'loud_noise', label: 'Barulho excessivo' },
+  { id: 'cheese', label: 'Queijo' },
+  { id: 'chocolate', label: 'Chocolate' },
+  { id: 'screen_time', label: 'Tempo de tela' },
+  { id: 'travel', label: 'Viagem' },
 ] as const;
 
 export const PAIN_LABELS: Record<PainLevel, string> = {

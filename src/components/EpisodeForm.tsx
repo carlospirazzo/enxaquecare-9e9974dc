@@ -26,6 +26,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
   const [isMenstrual, setIsMenstrual] = useState(false);
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [triggers, setTriggers] = useState<string[]>([]);
+  const [customTrigger, setCustomTrigger] = useState('');
   const [notes, setNotes] = useState('');
   const [triggersOpen, setTriggersOpen] = useState(false);
 
@@ -44,6 +45,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setIsMenstrual(false);
       setSymptoms([]);
       setTriggers([]);
+      setCustomTrigger('');
       setNotes('');
       setTriggersOpen(false);
     }
@@ -229,6 +231,53 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
                     {label}
                   </button>
                 ))}
+                {/* Custom triggers already added */}
+                {triggers
+                  .filter(t => !COMMON_TRIGGERS.some(ct => ct.id === t))
+                  .map(t => (
+                    <button
+                      key={t}
+                      onClick={() => toggleTrigger(t)}
+                      className="px-3 py-1.5 rounded-full text-xs font-medium transition-all bg-primary/15 text-primary ring-1 ring-primary/30 flex items-center gap-1"
+                    >
+                      {t}
+                      <X className="w-3 h-3" />
+                    </button>
+                  ))}
+              </div>
+              {/* Add custom trigger */}
+              <div className="flex gap-2 mt-3">
+                <Input
+                  value={customTrigger}
+                  onChange={(e) => setCustomTrigger(e.target.value)}
+                  placeholder="Outro gatilho..."
+                  className="flex-1 h-8 text-xs"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const val = customTrigger.trim();
+                      if (val && !triggers.includes(val)) {
+                        setTriggers(prev => [...prev, val]);
+                        setCustomTrigger('');
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs text-primary h-8"
+                  onClick={() => {
+                    const val = customTrigger.trim();
+                    if (val && !triggers.includes(val)) {
+                      setTriggers(prev => [...prev, val]);
+                      setCustomTrigger('');
+                    }
+                  }}
+                >
+                  <Plus className="w-3.5 h-3.5 mr-1" />
+                  Adicionar
+                </Button>
               </div>
             </CollapsibleContent>
           </Collapsible>
