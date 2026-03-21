@@ -38,6 +38,10 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
       (e.triggers || []).forEach(t => {
         triggerCounts.set(t, (triggerCounts.get(t) || 0) + 1);
       });
+      if (e.sleep) {
+        sleepQualities.push(e.sleep.quality);
+        sleepEntries.push(e.sleep);
+      }
     });
 
     const topTriggers = Array.from(triggerCounts.entries())
