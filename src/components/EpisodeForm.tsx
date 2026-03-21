@@ -29,6 +29,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
   const [customTrigger, setCustomTrigger] = useState('');
   const [notes, setNotes] = useState('');
   const [triggersOpen, setTriggersOpen] = useState(false);
+  const [sleepOpen, setSleepOpen] = useState(false);
+  const [sleep, setSleep] = useState<SleepDiary | null>(null);
 
   useEffect(() => {
     if (existing) {
