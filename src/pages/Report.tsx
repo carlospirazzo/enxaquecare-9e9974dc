@@ -71,7 +71,12 @@ const Report = () => {
 
     const episodesWithNotes = episodes.filter(e => e.notes?.trim()).sort((a, b) => a.date.localeCompare(b.date));
 
-    return { counts, total, avg, menstrualDays, topMeds, topSymptoms, topTriggers, episodesWithNotes };
+    const sleepEntries = episodes.filter(e => e.sleep);
+    const avgSleepQuality = sleepEntries.length > 0
+      ? sleepEntries.reduce((sum, e) => sum + e.sleep!.quality, 0) / sleepEntries.length
+      : null;
+
+    return { counts, total, avg, menstrualDays, topMeds, topSymptoms, topTriggers, episodesWithNotes, avgSleepQuality, sleepCount: sleepEntries.length };
   }, [episodes, period]);
 
   return (
