@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import logo from '@/assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO, subMonths, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
