@@ -23,6 +23,8 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
     const symptomCounts: Map<string, number> = new Map();
     const triggerCounts: Map<string, number> = new Map();
     let menstrualDays = 0;
+    const sleepQualities: number[] = [];
+    const sleepEntries: { bedtime: string; wakeTime: string; quality: number }[] = [];
 
     episodes.forEach(e => {
       counts[e.painLevel]++;
