@@ -90,11 +90,9 @@ const Index = () => {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-            <Brain className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <img src={logo} alt="EnxaqueCare logo" className="w-9 h-9 object-contain" />
           <div className="flex-1">
-            <h1 className="font-serif text-xl font-bold leading-tight">Diário de Enxaqueca</h1>
+            <h1 className="font-serif text-xl font-bold leading-tight">EnxaqueCare</h1>
             <p className="text-xs text-muted-foreground">Registre e acompanhe seus episódios</p>
           </div>
           <Button variant="ghost" size="icon" onClick={() => setHelpOpen(true)} title="Instruções de uso">
