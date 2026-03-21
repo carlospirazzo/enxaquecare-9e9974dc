@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Pill, Trash2, ChevronDown, Plus, X, Moon, Star } from 'lucide-react';
-import type { MigraineEpisode, PainLevel, SleepDiary } from '@/types/migraine';
+import { Pill, Trash2, ChevronDown, Plus, X, Moon, Star, Heart, Droplets, UtensilsCrossed, BrainCircuit } from 'lucide-react';
+import type { MigraineEpisode, PainLevel, SleepDiary, WellbeingScore } from '@/types/migraine';
 import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS, SLEEP_QUALITY_LABELS } from '@/types/migraine';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
