@@ -31,6 +31,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
   const [triggersOpen, setTriggersOpen] = useState(false);
   const [sleepOpen, setSleepOpen] = useState(false);
   const [sleep, setSleep] = useState<SleepDiary | null>(null);
+  const [wellbeingOpen, setWellbeingOpen] = useState(false);
+  const [wellbeing, setWellbeing] = useState<WellbeingScore | null>(null);
 
   useEffect(() => {
     if (existing) {
