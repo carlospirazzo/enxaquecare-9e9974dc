@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { MigraineCalendar } from '@/components/MigraineCalendar';
 import { EpisodeForm } from '@/components/EpisodeForm';
 import { MonthlySummary } from '@/components/MonthlySummary';
+import { SmartNotifications } from '@/components/SmartNotifications';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -18,7 +19,7 @@ const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
 
-  const { addEpisode, removeEpisode, getEpisode, getMonthEpisodes } = useMigraineStore();
+  const { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes } = useMigraineStore();
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -55,6 +56,9 @@ const Index = () => {
       </header>
 
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6 pb-20">
+        {/* Smart Notifications */}
+        <SmartNotifications episodes={episodes} />
+
         {/* Month navigation */}
         <div className="flex items-center justify-between">
           <Button variant="ghost" size="icon" onClick={() => setCurrentDate(d => subMonths(d, 1))}>
