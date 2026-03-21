@@ -95,6 +95,14 @@ const Index = () => {
           <Button variant="ghost" size="icon" onClick={() => setHelpOpen(true)} title="Instruções de uso">
             <HelpCircle className="w-5 h-5" />
           </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => window.location.href = 'mailto:enxaquecare@gmail.com?subject=Suporte - Diário de Enxaqueca'}
+            title="Suporte"
+          >
+            <Mail className="w-5 h-5" />
+          </Button>
           <Button variant="ghost" size="icon" onClick={toggleDark} title={isDark ? 'Modo claro' : 'Modo escuro'}>
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
