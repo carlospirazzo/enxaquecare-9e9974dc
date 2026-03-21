@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup, ScrollText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
