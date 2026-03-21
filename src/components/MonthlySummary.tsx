@@ -160,6 +160,24 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
         </motion.div>
       )}
 
+      {/* Sleep Summary */}
+      {summary.avgSleepQuality !== null && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          className="bg-card rounded-2xl p-4 border border-border"
+        >
+          <div className="flex items-center gap-2">
+            <Moon className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">
+              Sono: qualidade média <span className="font-bold text-primary">{summary.avgSleepQuality.toFixed(1)}/5</span>
+              {' '}({SLEEP_QUALITY_LABELS[Math.round(summary.avgSleepQuality)]})
+              {' '}— {summary.sleepCount} registro{summary.sleepCount !== 1 ? 's' : ''}
+            </span>
+          </div>
+        </motion.div>
+
       {/* Medications */}
       {summary.medications.size > 0 && (
         <motion.div
