@@ -2,9 +2,11 @@ import { useState, useCallback } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { MigraineCalendar } from '@/components/MigraineCalendar';
 import { EpisodeForm } from '@/components/EpisodeForm';
 import { MonthlySummary } from '@/components/MonthlySummary';
@@ -12,12 +14,56 @@ import { SmartNotifications } from '@/components/SmartNotifications';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
+const instructions = [
+  {
+    icon: CalendarDays,
+    title: 'Registrar um episódio',
+    text: 'Toque em qualquer dia do calendário para abrir o formulário. Selecione a intensidade da dor (leve, moderada ou grave) e preencha os detalhes.',
+  },
+  {
+    icon: Pill,
+    title: 'Medicações',
+    text: 'Adicione um ou mais medicamentos usados no episódio. Use o botão "+ Adicionar medicamento" para incluir vários.',
+  },
+  {
+    icon: Zap,
+    title: 'Sintomas e Gatilhos',
+    text: 'Selecione os sintomas associados e abra a seção "Gatilhos" para marcar possíveis causas. Você também pode digitar gatilhos personalizados.',
+  },
+  {
+    icon: MoonIcon,
+    title: 'Diário de Sono',
+    text: 'Expanda "Diário de Sono" para registrar horário de dormir/acordar e avaliar a qualidade do sono de 1 a 5 estrelas.',
+  },
+  {
+    icon: Heart,
+    title: 'Bem-estar do dia',
+    text: 'Expanda "Bem-estar do dia" para um check-up rápido: qualidade do sono, nível de estresse, hidratação e se pulou refeição.',
+  },
+  {
+    icon: BrainCircuit,
+    title: 'Período menstrual',
+    text: 'Marque a caixa "Período menstrual" para correlacionar crises com o ciclo. O relatório mostrará se há piora nesses dias.',
+  },
+  {
+    icon: FileText,
+    title: 'Relatório médico',
+    text: 'Toque no ícone de gráfico no header para ver o relatório completo com frequência de crises, top gatilhos, correlações e gráficos. Exporte em PDF para levar ao médico.',
+  },
+  {
+    icon: Bell,
+    title: 'Notificações inteligentes',
+    text: 'O app lembrará você de registrar o sono pela manhã e perguntará como está se não registrar crises por 3 dias.',
+  },
+];
+
 const Index = () => {
   const navigate = useNavigate();
   const { isDark, toggle: toggleDark } = useDarkMode();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes } = useMigraineStore();
 
@@ -46,6 +92,9 @@ const Index = () => {
             <h1 className="font-serif text-xl font-bold leading-tight">Diário de Enxaqueca</h1>
             <p className="text-xs text-muted-foreground">Registre e acompanhe seus episódios</p>
           </div>
+          <Button variant="ghost" size="icon" onClick={() => setHelpOpen(true)} title="Instruções de uso">
+            <HelpCircle className="w-5 h-5" />
+          </Button>
           <Button variant="ghost" size="icon" onClick={toggleDark} title={isDark ? 'Modo claro' : 'Modo escuro'}>
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
@@ -113,6 +162,33 @@ const Index = () => {
         onSave={addEpisode}
         onDelete={removeEpisode}
       />
+
+      {/* Instructions Dialog */}
+      <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
+        <DialogContent className="max-w-md max-h-[85vh] p-0">
+          <DialogHeader className="px-6 pt-6 pb-2">
+            <DialogTitle className="font-serif text-xl flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-primary" />
+              Instruções de Uso
+            </DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="px-6 pb-6 max-h-[65vh]">
+            <div className="space-y-4 pr-3">
+              {instructions.map(({ icon: Icon, title, text }, i) => (
+                <div key={i} className="flex gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{title}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
