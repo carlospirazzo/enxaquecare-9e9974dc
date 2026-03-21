@@ -31,7 +31,7 @@ const SectionTitle = ({ icon, children }: { icon: React.ReactNode; children: Rea
 
 const Report = () => {
   const navigate = useNavigate();
-  const [period, setPeriod] = useState<3 | 6>(3);
+  const [period, setPeriod] = useState<1 | 3 | 6>(3);
   const { getPeriodsEpisodes } = useMigraineStore();
 
   const episodes = getPeriodsEpisodes(period);
