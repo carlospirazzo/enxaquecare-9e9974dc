@@ -110,6 +110,9 @@ const Index = () => {
           >
             <Mail className="w-5 h-5" />
           </Button>
+          <Button variant="ghost" size="icon" onClick={() => setTermsOpen(true)} title="Termos de uso">
+            <ScrollText className="w-5 h-5" />
+          </Button>
           <Button variant="ghost" size="icon" onClick={toggleDark} title={isDark ? 'Modo claro' : 'Modo escuro'}>
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
