@@ -108,6 +108,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       triggers,
       notes,
       sleep: sleep || undefined,
+      wellbeing: wellbeing || undefined,
     });
     onClose();
   };
