@@ -55,6 +55,25 @@ export function useSmartNotifications(episodes: MigraineEpisode[]) {
       }
     }
 
+    // Medication overuse: 15+ days with medication in last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const cutoff = format(thirtyDaysAgo, 'yyyy-MM-dd');
+    const recentWithMeds = episodes.filter(
+      e => e.date >= cutoff && e.medications && e.medications.length > 0
+    );
+    if (recentWithMeds.length >= MED_OVERUSE_DAYS_THRESHOLD) {
+      const dismissed = localStorage.getItem(MED_OVERUSE_KEY);
+      if (dismissed !== today) {
+        active.push({
+          id: 'med_overuse',
+          type: 'med_overuse',
+          title: '⚠️ Uso excessivo de analgésicos',
+          message: `Você registrou medicamentos em ${recentWithMeds.length} dias nos últimos 30 dias. O uso frequente pode causar cefaleia por uso excessivo. Converse com seu médico.`,
+        });
+      }
+    }
+
     setNotifications(active);
   }, [episodes]);
 
