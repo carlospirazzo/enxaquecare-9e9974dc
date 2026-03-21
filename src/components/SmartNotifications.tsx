@@ -1,4 +1,4 @@
-import { X, Moon, MessageCircle } from 'lucide-react';
+import { X, Moon, MessageCircle, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import type { MigraineEpisode } from '@/types/migraine';
@@ -11,11 +11,13 @@ interface Props {
 const icons = {
   sleep: Moon,
   inactive: MessageCircle,
+  med_overuse: AlertTriangle,
 };
 
 const bgClasses = {
   sleep: 'bg-accent border-primary/20',
   inactive: 'bg-accent border-primary/20',
+  med_overuse: 'bg-destructive/10 border-destructive/30',
 };
 
 export function SmartNotifications({ episodes }: Props) {
