@@ -7,7 +7,7 @@ import { ArrowLeft, FileDown, AlertTriangle, Pill, Activity, Zap, Droplets, Stic
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
-import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS } from '@/types/migraine';
+import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS, SLEEP_QUALITY_LABELS } from '@/types/migraine';
 import type { PainLevel } from '@/types/migraine';
 
 const Report = () => {
