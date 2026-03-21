@@ -87,7 +87,7 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
             type="file"
             accept=".json"
             className="hidden"
-            onChange={handleImport}
+            onChange={handleFileSelect}
           />
 
           <p className="text-xs text-muted-foreground text-center pt-1">
@@ -96,5 +96,21 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
         </div>
       </DialogContent>
     </Dialog>
+
+    <AlertDialog open={!!pendingImport} onOpenChange={(v) => !v && setPendingImport(null)}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirmar importação</AlertDialogTitle>
+          <AlertDialogDescription>
+            Essa ação substituirá todos os seus {episodes.length} episódios atuais por {pendingImport?.length ?? 0} episódios do arquivo. Essa ação não pode ser desfeita.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={confirmImport}>Substituir dados</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </>
   );
 }
