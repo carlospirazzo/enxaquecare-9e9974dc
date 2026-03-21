@@ -189,6 +189,9 @@ const Index = () => {
         onImport={importEpisodes}
       />
 
+      {/* Terms of Use Dialog */}
+      <TermsOfUse open={termsOpen} onClose={() => setTermsOpen(false)} />
+
       {/* Instructions Dialog */}
       <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
         <DialogContent className="max-w-md max-h-[85vh] p-0">
