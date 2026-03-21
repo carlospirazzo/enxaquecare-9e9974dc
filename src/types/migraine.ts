@@ -6,6 +6,13 @@ export interface SleepDiary {
   quality: number;   // 1-5
 }
 
+export interface WellbeingScore {
+  sleepQuality: number;  // 1-5
+  stressLevel: number;   // 1-5
+  enoughWater: boolean;
+  skippedMeal: boolean;
+}
+
 export interface MigraineEpisode {
   id: string;
   date: string; // YYYY-MM-DD
@@ -16,6 +23,7 @@ export interface MigraineEpisode {
   triggers: string[];
   notes: string;
   sleep?: SleepDiary;
+  wellbeing?: WellbeingScore;
 }
 
 export const SLEEP_QUALITY_LABELS: Record<number, string> = {
