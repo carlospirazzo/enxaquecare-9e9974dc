@@ -58,7 +58,11 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
       .filter(e => e.notes?.trim())
       .sort((a, b) => a.date.localeCompare(b.date));
 
-    return { counts, medications, symptomCounts, triggerCounts, topTriggers, menstrualDays, total: episodes.length, episodesWithNotes };
+    const avgSleepQuality = sleepQualities.length > 0
+      ? (sleepQualities.reduce((a, b) => a + b, 0) / sleepQualities.length)
+      : null;
+
+    return { counts, medications, symptomCounts, triggerCounts, topTriggers, menstrualDays, total: episodes.length, episodesWithNotes, avgSleepQuality, sleepCount: sleepQualities.length };
   }, [episodes]);
 
   if (summary.total === 0) {
