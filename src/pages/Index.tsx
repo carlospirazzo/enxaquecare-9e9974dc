@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup, ScrollText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -12,6 +12,7 @@ import { EpisodeForm } from '@/components/EpisodeForm';
 import { MonthlySummary } from '@/components/MonthlySummary';
 import { SmartNotifications } from '@/components/SmartNotifications';
 import { DataMigration } from '@/components/DataMigration';
+import { TermsOfUse } from '@/components/TermsOfUse';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -66,6 +67,7 @@ const Index = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [migrationOpen, setMigrationOpen] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   const { episodes, addEpisode, removeEpisode, importEpisodes, getEpisode, getMonthEpisodes } = useMigraineStore();
 
@@ -107,6 +109,9 @@ const Index = () => {
             title="Suporte"
           >
             <Mail className="w-5 h-5" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={() => setTermsOpen(true)} title="Termos de uso">
+            <ScrollText className="w-5 h-5" />
           </Button>
           <Button variant="ghost" size="icon" onClick={toggleDark} title={isDark ? 'Modo claro' : 'Modo escuro'}>
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -183,6 +188,9 @@ const Index = () => {
         episodes={episodes}
         onImport={importEpisodes}
       />
+
+      {/* Terms of Use Dialog */}
+      <TermsOfUse open={termsOpen} onClose={() => setTermsOpen(false)} />
 
       {/* Instructions Dialog */}
       <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
