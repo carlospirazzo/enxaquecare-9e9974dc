@@ -101,6 +101,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       symptoms,
       triggers,
       notes,
+      sleep: sleep || undefined,
     });
     onClose();
   };
