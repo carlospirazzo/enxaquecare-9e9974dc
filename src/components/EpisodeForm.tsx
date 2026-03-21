@@ -375,6 +375,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
                 </Button>
               )}
             </CollapsibleContent>
+          </Collapsible>
+
           {/* Wellbeing Score (collapsible) */}
           <Collapsible open={wellbeingOpen} onOpenChange={setWellbeingOpen}>
             <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium w-full">
