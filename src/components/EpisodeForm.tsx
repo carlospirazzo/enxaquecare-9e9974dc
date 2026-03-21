@@ -289,7 +289,87 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
             </CollapsibleContent>
           </Collapsible>
 
-          {/* Notes */}
+          {/* Sleep Diary (collapsible) */}
+          <Collapsible open={sleepOpen} onOpenChange={setSleepOpen}>
+            <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium w-full">
+              <ChevronDown className={`w-4 h-4 transition-transform ${sleepOpen ? 'rotate-180' : ''}`} />
+              <Moon className="w-4 h-4" />
+              Diário de Sono (opcional)
+              {sleep && (
+                <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-auto">
+                  {SLEEP_QUALITY_LABELS[sleep.quality]}
+                </span>
+              )}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Hora de dormir</label>
+                  <Input
+                    type="time"
+                    value={sleep?.bedtime || ''}
+                    onChange={(e) => setSleep(prev => ({
+                      bedtime: e.target.value,
+                      wakeTime: prev?.wakeTime || '',
+                      quality: prev?.quality || 3,
+                    }))}
+                    className="h-9"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Hora de acordar</label>
+                  <Input
+                    type="time"
+                    value={sleep?.wakeTime || ''}
+                    onChange={(e) => setSleep(prev => ({
+                      bedtime: prev?.bedtime || '',
+                      wakeTime: e.target.value,
+                      quality: prev?.quality || 3,
+                    }))}
+                    className="h-9"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-2 block">Qualidade do sono</label>
+                <div className="flex gap-1.5">
+                  {[1, 2, 3, 4, 5].map(q => (
+                    <button
+                      key={q}
+                      onClick={() => setSleep(prev => ({
+                        bedtime: prev?.bedtime || '',
+                        wakeTime: prev?.wakeTime || '',
+                        quality: q,
+                      }))}
+                      className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all flex flex-col items-center gap-0.5 ${
+                        sleep?.quality === q
+                          ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                          : 'bg-muted text-muted-foreground hover:bg-accent'
+                      }`}
+                    >
+                      <Star className={`w-3.5 h-3.5 ${sleep?.quality === q ? 'fill-primary' : ''}`} />
+                      <span>{q}</span>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1 text-center">
+                  {sleep?.quality ? SLEEP_QUALITY_LABELS[sleep.quality] : '1 = Péssimo, 5 = Ótimo'}
+                </p>
+              </div>
+              {sleep && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs text-destructive"
+                  onClick={() => { setSleep(null); setSleepOpen(false); }}
+                >
+                  <X className="w-3.5 h-3.5 mr-1" />
+                  Limpar dados de sono
+                </Button>
+              )}
+            </CollapsibleContent>
+          </Collapsible>
+
           <div>
             <label className="text-sm font-medium mb-2 block">Observações</label>
             <Textarea
