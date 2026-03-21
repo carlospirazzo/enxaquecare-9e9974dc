@@ -477,7 +477,7 @@ const Report = () => {
 
         {/* Print footer */}
         <div className="hidden print:block text-center text-[10px] text-muted-foreground border-t border-foreground/20 pt-3 mt-6">
-          <p>Relatório gerado automaticamente pelo aplicativo Diário de Enxaqueca</p>
+          <p>Relatório gerado automaticamente pelo EnxaqueCare</p>
           <p>Este documento é informativo e deve ser analisado em conjunto com avaliação médica.</p>
         </div>
 
