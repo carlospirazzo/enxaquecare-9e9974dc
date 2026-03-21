@@ -4,7 +4,7 @@ import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup, ScrollText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '@/assets/logo.png';
+import logoIcon from '@/assets/logo-icon.png';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
