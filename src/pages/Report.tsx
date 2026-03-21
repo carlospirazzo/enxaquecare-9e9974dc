@@ -188,14 +188,14 @@ const Report = () => {
 
         {/* Period toggle */}
         <div className="flex gap-2 justify-center print:hidden">
-          {([3, 6] as const).map(p => (
+          {([1, 3, 6] as const).map(p => (
             <Button
               key={p}
               variant={period === p ? 'default' : 'outline'}
               size="sm"
               onClick={() => setPeriod(p)}
             >
-              {p} meses
+              {p} {p === 1 ? 'mês' : 'meses'}
             </Button>
           ))}
         </div>
