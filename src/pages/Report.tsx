@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { format, parseISO, subMonths, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { motion } from 'framer-motion';
-import { ArrowLeft, FileDown, AlertTriangle, Pill, Activity, Zap, Droplets, StickyNote } from 'lucide-react';
+import { ArrowLeft, FileDown, AlertTriangle, Pill, Activity, Zap, Droplets, StickyNote, Moon } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
-import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS } from '@/types/migraine';
+import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS, SLEEP_QUALITY_LABELS } from '@/types/migraine';
 import type { PainLevel } from '@/types/migraine';
 
 const Report = () => {
@@ -47,7 +47,6 @@ const Report = () => {
     episodes.forEach(e => {
       counts[e.painLevel]++;
       if (e.isMenstrual) menstrualDays++;
-      if (e.isMenstrual) menstrualDays++;
       (e.medications || []).forEach(med => {
         if (med) medications.set(med, (medications.get(med) || 0) + 1);
       });
@@ -71,7 +70,12 @@ const Report = () => {
 
     const episodesWithNotes = episodes.filter(e => e.notes?.trim()).sort((a, b) => a.date.localeCompare(b.date));
 
-    return { counts, total, avg, menstrualDays, topMeds, topSymptoms, topTriggers, episodesWithNotes };
+    const sleepEntries = episodes.filter(e => e.sleep);
+    const avgSleepQuality = sleepEntries.length > 0
+      ? sleepEntries.reduce((sum, e) => sum + e.sleep!.quality, 0) / sleepEntries.length
+      : null;
+
+    return { counts, total, avg, menstrualDays, topMeds, topSymptoms, topTriggers, episodesWithNotes, avgSleepQuality, sleepCount: sleepEntries.length };
   }, [episodes, period]);
 
   return (
@@ -223,6 +227,20 @@ const Report = () => {
               <Droplets className="w-4 h-4 text-menstrual" />
               <span className="text-sm font-medium">
                 {stats.menstrualDays} de {stats.total} crises ({stats.total > 0 ? Math.round((stats.menstrualDays / stats.total) * 100) : 0}%) ocorreram em período menstrual
+              </span>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Sleep */}
+        {stats.avgSleepQuality !== null && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.27 }} className="bg-card rounded-2xl p-4 border border-border">
+            <div className="flex items-center gap-2">
+              <Moon className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">
+                Qualidade média do sono: <span className="font-bold text-primary">{stats.avgSleepQuality.toFixed(1)}/5</span>
+                {' '}({SLEEP_QUALITY_LABELS[Math.round(stats.avgSleepQuality)]})
+                {' '}— {stats.sleepCount} registro{stats.sleepCount !== 1 ? 's' : ''}
               </span>
             </div>
           </motion.div>

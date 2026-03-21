@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Pill, Droplets, Activity, Zap, StickyNote } from 'lucide-react';
+import { AlertTriangle, Pill, Droplets, Activity, Zap, StickyNote, Moon } from 'lucide-react';
 import type { MigraineEpisode, PainLevel } from '@/types/migraine';
-import { PAIN_LABELS, COMMON_SYMPTOMS, COMMON_TRIGGERS } from '@/types/migraine';
+import { PAIN_LABELS, COMMON_SYMPTOMS, COMMON_TRIGGERS, SLEEP_QUALITY_LABELS } from '@/types/migraine';
 
 interface MonthlySummaryProps {
   episodes: MigraineEpisode[];
@@ -23,6 +23,8 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
     const symptomCounts: Map<string, number> = new Map();
     const triggerCounts: Map<string, number> = new Map();
     let menstrualDays = 0;
+    const sleepQualities: number[] = [];
+    const sleepEntries: { bedtime: string; wakeTime: string; quality: number }[] = [];
 
     episodes.forEach(e => {
       counts[e.painLevel]++;
@@ -36,6 +38,10 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
       (e.triggers || []).forEach(t => {
         triggerCounts.set(t, (triggerCounts.get(t) || 0) + 1);
       });
+      if (e.sleep) {
+        sleepQualities.push(e.sleep.quality);
+        sleepEntries.push(e.sleep);
+      }
     });
 
     const topTriggers = Array.from(triggerCounts.entries())
@@ -52,7 +58,11 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
       .filter(e => e.notes?.trim())
       .sort((a, b) => a.date.localeCompare(b.date));
 
-    return { counts, medications, symptomCounts, triggerCounts, topTriggers, menstrualDays, total: episodes.length, episodesWithNotes };
+    const avgSleepQuality = sleepQualities.length > 0
+      ? (sleepQualities.reduce((a, b) => a + b, 0) / sleepQualities.length)
+      : null;
+
+    return { counts, medications, symptomCounts, triggerCounts, topTriggers, menstrualDays, total: episodes.length, episodesWithNotes, avgSleepQuality, sleepCount: sleepQualities.length };
   }, [episodes]);
 
   if (summary.total === 0) {
@@ -145,6 +155,25 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
             <Droplets className="w-4 h-4 text-menstrual" />
             <span className="text-sm font-medium">
               {summary.menstrualDays} dia{summary.menstrualDays !== 1 ? 's' : ''} em período menstrual
+            </span>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Sleep Summary */}
+      {summary.avgSleepQuality !== null && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          className="bg-card rounded-2xl p-4 border border-border"
+        >
+          <div className="flex items-center gap-2">
+            <Moon className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">
+              Sono: qualidade média <span className="font-bold text-primary">{summary.avgSleepQuality.toFixed(1)}/5</span>
+              {' '}({SLEEP_QUALITY_LABELS[Math.round(summary.avgSleepQuality)]})
+              {' '}— {summary.sleepCount} registro{summary.sleepCount !== 1 ? 's' : ''}
             </span>
           </div>
         </motion.div>

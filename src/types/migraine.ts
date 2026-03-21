@@ -1,5 +1,11 @@
 export type PainLevel = 'light' | 'moderate' | 'severe';
 
+export interface SleepDiary {
+  bedtime: string;   // HH:mm
+  wakeTime: string;  // HH:mm
+  quality: number;   // 1-5
+}
+
 export interface MigraineEpisode {
   id: string;
   date: string; // YYYY-MM-DD
@@ -9,7 +15,16 @@ export interface MigraineEpisode {
   symptoms: string[]; // e.g. ['vertigo', 'nausea', 'vomiting', 'tinnitus', 'aura']
   triggers: string[];
   notes: string;
+  sleep?: SleepDiary;
 }
+
+export const SLEEP_QUALITY_LABELS: Record<number, string> = {
+  1: 'Péssimo',
+  2: 'Ruim',
+  3: 'Regular',
+  4: 'Bom',
+  5: 'Ótimo',
+};
 
 export const COMMON_SYMPTOMS = [
   { id: 'vertigo', label: 'Vertigem' },
