@@ -65,8 +65,9 @@ const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [migrationOpen, setMigrationOpen] = useState(false);
 
-  const { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes } = useMigraineStore();
+  const { episodes, addEpisode, removeEpisode, importEpisodes, getEpisode, getMonthEpisodes } = useMigraineStore();
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
