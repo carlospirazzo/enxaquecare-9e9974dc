@@ -58,6 +58,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setTriggersOpen(false);
       setSleep(null);
       setSleepOpen(false);
+      setWellbeing(null);
+      setWellbeingOpen(false);
     }
   }, [existing, date]);
 
