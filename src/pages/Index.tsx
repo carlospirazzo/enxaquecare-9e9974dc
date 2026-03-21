@@ -97,6 +97,9 @@ const Index = () => {
           <Button variant="ghost" size="icon" onClick={() => setHelpOpen(true)} title="Instruções de uso">
             <HelpCircle className="w-5 h-5" />
           </Button>
+          <Button variant="ghost" size="icon" onClick={() => setMigrationOpen(true)} title="Migrar dados">
+            <DatabaseBackup className="w-5 h-5" />
+          </Button>
           <Button
             variant="ghost"
             size="icon"
