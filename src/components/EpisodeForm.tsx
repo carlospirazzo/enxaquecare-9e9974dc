@@ -45,6 +45,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setIsMenstrual(false);
       setSymptoms([]);
       setTriggers([]);
+      setCustomTrigger('');
       setNotes('');
       setTriggersOpen(false);
     }
