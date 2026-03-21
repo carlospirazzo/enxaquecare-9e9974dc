@@ -4,7 +4,7 @@ import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup, ScrollText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '@/assets/logo.png';
+import logoIcon from '@/assets/logo-icon.png';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -90,7 +90,7 @@ const Index = () => {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-3">
-          <img src={logo} alt="EnxaqueCare logo" className="w-9 h-9 object-contain" />
+          <img src={logoIcon} alt="EnxaqueCare logo" className="w-9 h-9 object-contain" />
           <div className="flex-1">
             <h1 className="font-serif text-xl font-bold leading-tight">EnxaqueCare</h1>
             <p className="text-xs text-muted-foreground">Registre e acompanhe seus episódios</p>
