@@ -19,7 +19,7 @@ const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
 
-  const { addEpisode, removeEpisode, getEpisode, getMonthEpisodes } = useMigraineStore();
+  const { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes } = useMigraineStore();
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
