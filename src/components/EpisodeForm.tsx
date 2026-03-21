@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Pill, Trash2, ChevronDown, Plus, X, Moon, Star } from 'lucide-react';
-import type { MigraineEpisode, PainLevel, SleepDiary } from '@/types/migraine';
+import { Pill, Trash2, ChevronDown, Plus, X, Moon, Star, Heart, Droplets, UtensilsCrossed, BrainCircuit } from 'lucide-react';
+import type { MigraineEpisode, PainLevel, SleepDiary, WellbeingScore } from '@/types/migraine';
 import { COMMON_SYMPTOMS, COMMON_TRIGGERS, PAIN_LABELS, SLEEP_QUALITY_LABELS } from '@/types/migraine';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +31,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
   const [triggersOpen, setTriggersOpen] = useState(false);
   const [sleepOpen, setSleepOpen] = useState(false);
   const [sleep, setSleep] = useState<SleepDiary | null>(null);
+  const [wellbeingOpen, setWellbeingOpen] = useState(false);
+  const [wellbeing, setWellbeing] = useState<WellbeingScore | null>(null);
 
   useEffect(() => {
     if (existing) {
@@ -43,6 +45,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setTriggersOpen((existing.triggers || []).length > 0);
       setSleep(existing.sleep || null);
       setSleepOpen(!!existing.sleep);
+      setWellbeing(existing.wellbeing || null);
+      setWellbeingOpen(!!existing.wellbeing);
     } else {
       setPainLevel('moderate');
       setMedications(['']);
@@ -54,6 +58,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setTriggersOpen(false);
       setSleep(null);
       setSleepOpen(false);
+      setWellbeing(null);
+      setWellbeingOpen(false);
     }
   }, [existing, date]);
 
@@ -102,6 +108,7 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       triggers,
       notes,
       sleep: sleep || undefined,
+      wellbeing: wellbeing || undefined,
     });
     onClose();
   };
@@ -365,6 +372,132 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
                 >
                   <X className="w-3.5 h-3.5 mr-1" />
                   Limpar dados de sono
+                </Button>
+              )}
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Wellbeing Score (collapsible) */}
+          <Collapsible open={wellbeingOpen} onOpenChange={setWellbeingOpen}>
+            <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium w-full">
+              <ChevronDown className={`w-4 h-4 transition-transform ${wellbeingOpen ? 'rotate-180' : ''}`} />
+              <Heart className="w-4 h-4" />
+              Bem-estar do dia (opcional)
+              {wellbeing && (
+                <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-auto">
+                  preenchido
+                </span>
+              )}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 space-y-4">
+              {/* Sleep quality */}
+              <div>
+                <label className="text-xs text-muted-foreground mb-2 block">
+                  <Moon className="w-3.5 h-3.5 inline mr-1.5 -mt-0.5" />
+                  Como você dormiu?
+                </label>
+                <div className="flex gap-1.5">
+                  {[1, 2, 3, 4, 5].map(q => (
+                    <button
+                      key={q}
+                      onClick={() => setWellbeing(prev => ({
+                        sleepQuality: q,
+                        stressLevel: prev?.stressLevel || 3,
+                        enoughWater: prev?.enoughWater ?? true,
+                        skippedMeal: prev?.skippedMeal ?? false,
+                      }))}
+                      className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all flex flex-col items-center gap-0.5 ${
+                        wellbeing?.sleepQuality === q
+                          ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                          : 'bg-muted text-muted-foreground hover:bg-accent'
+                      }`}
+                    >
+                      <Star className={`w-3.5 h-3.5 ${wellbeing?.sleepQuality === q ? 'fill-primary' : ''}`} />
+                      <span>{q}</span>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1 text-center">
+                  {wellbeing?.sleepQuality ? SLEEP_QUALITY_LABELS[wellbeing.sleepQuality] : '1 = Péssimo, 5 = Ótimo'}
+                </p>
+              </div>
+
+              {/* Stress level */}
+              <div>
+                <label className="text-xs text-muted-foreground mb-2 block">
+                  <BrainCircuit className="w-3.5 h-3.5 inline mr-1.5 -mt-0.5" />
+                  Nível de estresse hoje
+                </label>
+                <div className="flex gap-1.5">
+                  {[1, 2, 3, 4, 5].map(q => (
+                    <button
+                      key={q}
+                      onClick={() => setWellbeing(prev => ({
+                        sleepQuality: prev?.sleepQuality || 3,
+                        stressLevel: q,
+                        enoughWater: prev?.enoughWater ?? true,
+                        skippedMeal: prev?.skippedMeal ?? false,
+                      }))}
+                      className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${
+                        wellbeing?.stressLevel === q
+                          ? 'bg-destructive/15 text-destructive ring-1 ring-destructive/30'
+                          : 'bg-muted text-muted-foreground hover:bg-accent'
+                      }`}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1 text-center">
+                  1 = Tranquilo, 5 = Muito estressado
+                </p>
+              </div>
+
+              {/* Quick yes/no checks */}
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setWellbeing(prev => ({
+                    sleepQuality: prev?.sleepQuality || 3,
+                    stressLevel: prev?.stressLevel || 3,
+                    enoughWater: !(prev?.enoughWater ?? false),
+                    skippedMeal: prev?.skippedMeal ?? false,
+                  }))}
+                  className={`flex items-center gap-2 p-3 rounded-lg text-xs font-medium transition-all ${
+                    wellbeing?.enoughWater
+                      ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                      : 'bg-muted text-muted-foreground hover:bg-accent'
+                  }`}
+                >
+                  <Droplets className="w-4 h-4" />
+                  Tomou água suficiente
+                </button>
+                <button
+                  onClick={() => setWellbeing(prev => ({
+                    sleepQuality: prev?.sleepQuality || 3,
+                    stressLevel: prev?.stressLevel || 3,
+                    enoughWater: prev?.enoughWater ?? true,
+                    skippedMeal: !(prev?.skippedMeal ?? false),
+                  }))}
+                  className={`flex items-center gap-2 p-3 rounded-lg text-xs font-medium transition-all ${
+                    wellbeing?.skippedMeal
+                      ? 'bg-destructive/15 text-destructive ring-1 ring-destructive/30'
+                      : 'bg-muted text-muted-foreground hover:bg-accent'
+                  }`}
+                >
+                  <UtensilsCrossed className="w-4 h-4" />
+                  Pulou refeição
+                </button>
+              </div>
+
+              {wellbeing && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs text-destructive"
+                  onClick={() => { setWellbeing(null); setWellbeingOpen(false); }}
+                >
+                  <X className="w-3.5 h-3.5 mr-1" />
+                  Limpar bem-estar
                 </Button>
               )}
             </CollapsibleContent>
