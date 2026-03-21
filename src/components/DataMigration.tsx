@@ -59,6 +59,7 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
   };
 
   return (
+    <>
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
