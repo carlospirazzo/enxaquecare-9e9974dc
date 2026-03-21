@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -11,6 +11,7 @@ import { MigraineCalendar } from '@/components/MigraineCalendar';
 import { EpisodeForm } from '@/components/EpisodeForm';
 import { MonthlySummary } from '@/components/MonthlySummary';
 import { SmartNotifications } from '@/components/SmartNotifications';
+import { DataMigration } from '@/components/DataMigration';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -64,8 +65,9 @@ const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [migrationOpen, setMigrationOpen] = useState(false);
 
-  const { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes } = useMigraineStore();
+  const { episodes, addEpisode, removeEpisode, importEpisodes, getEpisode, getMonthEpisodes } = useMigraineStore();
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -94,6 +96,9 @@ const Index = () => {
           </div>
           <Button variant="ghost" size="icon" onClick={() => setHelpOpen(true)} title="Instruções de uso">
             <HelpCircle className="w-5 h-5" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={() => setMigrationOpen(true)} title="Migrar dados">
+            <DatabaseBackup className="w-5 h-5" />
           </Button>
           <Button
             variant="ghost"
@@ -169,6 +174,14 @@ const Index = () => {
         onClose={() => setFormOpen(false)}
         onSave={addEpisode}
         onDelete={removeEpisode}
+      />
+
+      {/* Data Migration Dialog */}
+      <DataMigration
+        open={migrationOpen}
+        onClose={() => setMigrationOpen(false)}
+        episodes={episodes}
+        onImport={importEpisodes}
       />
 
       {/* Instructions Dialog */}
