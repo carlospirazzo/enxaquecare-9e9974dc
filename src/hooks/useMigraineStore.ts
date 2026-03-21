@@ -7,18 +7,18 @@ import { toast } from '@/hooks/use-toast';
 
 const STORAGE_KEY = 'migraine-episodes';
 
-function toDbRow(episode: MigraineEpisode, userId: string) {
+function toDbRow(episode: MigraineEpisode, userId: string): any {
   return {
     user_id: userId,
     date: episode.date,
     pain_level: episode.painLevel,
-    medications: episode.medications,
+    medications: episode.medications as any,
     is_menstrual: episode.isMenstrual,
-    symptoms: episode.symptoms,
-    triggers: episode.triggers,
+    symptoms: episode.symptoms as any,
+    triggers: episode.triggers as any,
     notes: episode.notes,
-    sleep: episode.sleep ?? null,
-    wellbeing: episode.wellbeing ?? null,
+    sleep: (episode.sleep ?? null) as any,
+    wellbeing: (episode.wellbeing ?? null) as any,
   };
 }
 
