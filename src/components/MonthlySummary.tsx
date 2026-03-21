@@ -177,6 +177,7 @@ export function MonthlySummary({ episodes }: MonthlySummaryProps) {
             </span>
           </div>
         </motion.div>
+      )}
 
       {/* Medications */}
       {summary.medications.size > 0 && (
