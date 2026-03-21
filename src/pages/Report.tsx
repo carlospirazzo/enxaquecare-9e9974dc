@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import logo from '@/assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO, subMonths, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -174,8 +175,9 @@ const Report = () => {
 
       <main className="max-w-lg mx-auto px-4 py-6 space-y-5 pb-20 print:max-w-none print:px-8 print:py-0" id="report-content">
         {/* Print header */}
-        <div className="hidden print:block text-center mb-4 pt-4 border-b-2 border-foreground/20 pb-4">
-          <h1 className="font-serif text-2xl font-bold">Relatório Médico — Diário de Enxaqueca</h1>
+         <div className="hidden print:block text-center mb-4 pt-4 border-b-2 border-foreground/20 pb-4">
+          <img src={logo} alt="EnxaqueCare" className="h-12 mx-auto mb-2" />
+          <h1 className="font-serif text-2xl font-bold">Relatório Médico — EnxaqueCare</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Período: últimos {period} meses • Gerado em {format(new Date(), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
           </p>
@@ -475,7 +477,7 @@ const Report = () => {
 
         {/* Print footer */}
         <div className="hidden print:block text-center text-[10px] text-muted-foreground border-t border-foreground/20 pt-3 mt-6">
-          <p>Relatório gerado automaticamente pelo aplicativo Diário de Enxaqueca</p>
+          <p>Relatório gerado automaticamente pelo EnxaqueCare</p>
           <p>Este documento é informativo e deve ser analisado em conjunto com avaliação médica.</p>
         </div>
 
