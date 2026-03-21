@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Eye, EyeOff, LogIn, UserPlus } from 'lucide-react';
 
-type Mode = 'login' | 'signup';
+type Mode = 'login' | 'signup' | 'forgot';
 
 const Auth = () => {
   const [mode, setMode] = useState<Mode>('login');
