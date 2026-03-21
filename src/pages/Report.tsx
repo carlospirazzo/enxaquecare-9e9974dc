@@ -233,6 +233,20 @@ const Report = () => {
           </motion.div>
         )}
 
+        {/* Sleep */}
+        {stats.avgSleepQuality !== null && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.27 }} className="bg-card rounded-2xl p-4 border border-border">
+            <div className="flex items-center gap-2">
+              <Moon className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">
+                Qualidade média do sono: <span className="font-bold text-primary">{stats.avgSleepQuality.toFixed(1)}/5</span>
+                {' '}({SLEEP_QUALITY_LABELS[Math.round(stats.avgSleepQuality)]})
+                {' '}— {stats.sleepCount} registro{stats.sleepCount !== 1 ? 's' : ''}
+              </span>
+            </div>
+          </motion.div>
+        )}
+
         {/* Notes */}
         {stats.episodesWithNotes.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-card rounded-2xl p-5 border border-border">
