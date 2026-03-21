@@ -38,11 +38,11 @@
 
     /* Pain level colors */
     --pain-none: 220 15% 94%;
-    --pain-light: 45 93% 58%;
-    --pain-moderate: 25 95% 55%;
+    --pain-light: 152 69% 50%;
+    --pain-moderate: 45 93% 58%;
     --pain-severe: 0 72% 51%;
-    --pain-light-bg: 45 93% 94%;
-    --pain-moderate-bg: 25 95% 93%;
+    --pain-light-bg: 152 69% 93%;
+    --pain-moderate-bg: 45 93% 93%;
     --pain-severe-bg: 0 72% 94%;
 
     /* Menstrual indicator */
