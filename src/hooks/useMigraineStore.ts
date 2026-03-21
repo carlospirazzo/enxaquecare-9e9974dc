@@ -65,5 +65,5 @@ export function useMigraineStore() {
     return episodes.filter(e => e.date >= cutoff).sort((a, b) => a.date.localeCompare(b.date));
   }, [episodes]);
 
-  return { episodes, addEpisode, removeEpisode, getEpisode, getMonthEpisodes, getPeriodsEpisodes };
+  return { episodes, addEpisode, removeEpisode, importEpisodes, getEpisode, getMonthEpisodes, getPeriodsEpisodes };
 }
