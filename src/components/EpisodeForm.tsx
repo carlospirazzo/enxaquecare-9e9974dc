@@ -41,6 +41,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setTriggers(existing.triggers || []);
       setNotes(existing.notes);
       setTriggersOpen((existing.triggers || []).length > 0);
+      setSleep(existing.sleep || null);
+      setSleepOpen(!!existing.sleep);
     } else {
       setPainLevel('moderate');
       setMedications(['']);
@@ -50,6 +52,8 @@ export function EpisodeForm({ date, existing, open, onClose, onSave, onDelete }:
       setCustomTrigger('');
       setNotes('');
       setTriggersOpen(false);
+      setSleep(null);
+      setSleepOpen(false);
     }
   }, [existing, date]);
 
