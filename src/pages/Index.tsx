@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { MigraineCalendar } from '@/components/MigraineCalendar';
 import { EpisodeForm } from '@/components/EpisodeForm';
 import { MonthlySummary } from '@/components/MonthlySummary';
+import { SmartNotifications } from '@/components/SmartNotifications';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
