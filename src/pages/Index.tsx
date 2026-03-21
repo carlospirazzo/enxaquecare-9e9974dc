@@ -56,6 +56,9 @@ const Index = () => {
       </header>
 
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6 pb-20">
+        {/* Smart Notifications */}
+        <SmartNotifications episodes={episodes} />
+
         {/* Month navigation */}
         <div className="flex items-center justify-between">
           <Button variant="ghost" size="icon" onClick={() => setCurrentDate(d => subMonths(d, 1))}>
