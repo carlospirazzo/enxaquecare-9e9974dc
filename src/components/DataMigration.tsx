@@ -1,7 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Download, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { toast } from '@/hooks/use-toast';
 import type { MigraineEpisode } from '@/types/migraine';
 
@@ -14,6 +15,7 @@ interface DataMigrationProps {
 
 export function DataMigration({ open, onClose, episodes, onImport }: DataMigrationProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [pendingImport, setPendingImport] = useState<MigraineEpisode[] | null>(null);
 
   const handleExport = () => {
     const data = JSON.stringify(episodes, null, 2);
@@ -27,7 +29,7 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
     toast({ title: 'Dados exportados!', description: `${episodes.length} episódios salvos no arquivo.` });
   };
 
-  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -36,22 +38,28 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
       try {
         const imported = JSON.parse(ev.target?.result as string);
         if (!Array.isArray(imported)) throw new Error('Formato inválido');
-        // Basic validation
         const valid = imported.every((ep: any) => ep.date && ep.painLevel);
         if (!valid) throw new Error('Dados incompletos');
-        onImport(imported);
-        toast({ title: 'Dados importados!', description: `${imported.length} episódios restaurados.` });
-        onClose();
+        setPendingImport(imported);
       } catch {
         toast({ title: 'Erro na importação', description: 'O arquivo não contém dados válidos.', variant: 'destructive' });
       }
     };
     reader.readAsText(file);
-    // Reset input
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  const confirmImport = () => {
+    if (pendingImport) {
+      onImport(pendingImport);
+      toast({ title: 'Dados importados!', description: `${pendingImport.length} episódios restaurados.` });
+      setPendingImport(null);
+      onClose();
+    }
+  };
+
   return (
+    <>
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
@@ -80,7 +88,7 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
             type="file"
             accept=".json"
             className="hidden"
-            onChange={handleImport}
+            onChange={handleFileSelect}
           />
 
           <p className="text-xs text-muted-foreground text-center pt-1">
@@ -89,5 +97,21 @@ export function DataMigration({ open, onClose, episodes, onImport }: DataMigrati
         </div>
       </DialogContent>
     </Dialog>
+
+    <AlertDialog open={!!pendingImport} onOpenChange={(v) => !v && setPendingImport(null)}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirmar importação</AlertDialogTitle>
+          <AlertDialogDescription>
+            Essa ação substituirá todos os seus {episodes.length} episódios atuais por {pendingImport?.length ?? 0} episódios do arquivo. Essa ação não pode ser desfeita.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={confirmImport}>Substituir dados</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </>
   );
 }
