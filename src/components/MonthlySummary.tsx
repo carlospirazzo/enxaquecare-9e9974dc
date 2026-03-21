@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Pill, Droplets, Activity, Zap, StickyNote } from 'lucide-react';
+import { AlertTriangle, Pill, Droplets, Activity, Zap, StickyNote, Moon } from 'lucide-react';
 import type { MigraineEpisode, PainLevel } from '@/types/migraine';
-import { PAIN_LABELS, COMMON_SYMPTOMS, COMMON_TRIGGERS } from '@/types/migraine';
+import { PAIN_LABELS, COMMON_SYMPTOMS, COMMON_TRIGGERS, SLEEP_QUALITY_LABELS } from '@/types/migraine';
 
 interface MonthlySummaryProps {
   episodes: MigraineEpisode[];
