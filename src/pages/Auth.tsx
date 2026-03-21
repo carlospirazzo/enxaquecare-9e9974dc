@@ -8,12 +8,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Eye, EyeOff, LogIn, UserPlus } from 'lucide-react';
 
-type Mode = 'login' | 'signup';
+type Mode = 'login' | 'signup' | 'forgot';
 
 const Auth = () => {
   const [mode, setMode] = useState<Mode>('login');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
 
   // Login fields
   const [loginEmail, setLoginEmail] = useState('');
@@ -45,6 +46,21 @@ const Auth = () => {
     setLoading(false);
     if (error) {
       toast({ title: 'Erro ao entrar', description: error.message, variant: 'destructive' });
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'E-mail enviado!', description: 'Verifique sua caixa de entrada para redefinir a senha.' });
+      setMode('login');
     }
   };
 
@@ -166,6 +182,47 @@ const Auth = () => {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? 'Entrando...' : 'Entrar'}
               </Button>
+              <button
+                type="button"
+                onClick={() => setMode('forgot')}
+                className="w-full text-center text-sm text-primary hover:underline"
+              >
+                Esqueci minha senha
+              </button>
+            </motion.form>
+          ) : mode === 'forgot' ? (
+            <motion.form
+              key="forgot"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              onSubmit={handleForgotPassword}
+              className="bg-card rounded-2xl p-6 shadow-sm border border-border space-y-4"
+            >
+              <p className="text-sm text-muted-foreground">
+                Informe seu e-mail para receber um link de recuperação de senha.
+              </p>
+              <div className="space-y-2">
+                <Label htmlFor="forgot-email">E-mail</Label>
+                <Input
+                  id="forgot-email"
+                  type="email"
+                  required
+                  value={forgotEmail}
+                  onChange={e => setForgotEmail(e.target.value)}
+                  placeholder="seu@email.com"
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? 'Enviando...' : 'Enviar link de recuperação'}
+              </Button>
+              <button
+                type="button"
+                onClick={() => setMode('login')}
+                className="w-full text-center text-sm text-primary hover:underline"
+              >
+                Voltar ao login
+              </button>
             </motion.form>
           ) : (
             <motion.form
