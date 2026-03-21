@@ -2,8 +2,9 @@ import { useState, useCallback } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Brain, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup, ScrollText } from 'lucide-react';
+import { ChevronLeft, ChevronRight, FileBarChart, Sun, Moon, HelpCircle, CalendarDays, Pill, Heart, Moon as MoonIcon, BrainCircuit, Zap, FileText, Bell, Mail, DatabaseBackup, ScrollText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '@/assets/logo.png';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -89,11 +90,9 @@ const Index = () => {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-            <Brain className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <img src={logo} alt="EnxaqueCare logo" className="w-9 h-9 object-contain" />
           <div className="flex-1">
-            <h1 className="font-serif text-xl font-bold leading-tight">Diário de Enxaqueca</h1>
+            <h1 className="font-serif text-xl font-bold leading-tight">EnxaqueCare</h1>
             <p className="text-xs text-muted-foreground">Registre e acompanhe seus episódios</p>
           </div>
           <Button variant="ghost" size="icon" onClick={() => setHelpOpen(true)} title="Instruções de uso">
