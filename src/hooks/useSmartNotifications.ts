@@ -4,11 +4,13 @@ import type { MigraineEpisode } from '@/types/migraine';
 
 const SLEEP_REMINDER_KEY = 'migraine-sleep-reminder-dismissed';
 const INACTIVE_REMINDER_KEY = 'migraine-inactive-reminder-dismissed';
+const MED_OVERUSE_KEY = 'migraine-med-overuse-dismissed';
 const INACTIVE_DAYS_THRESHOLD = 3;
+const MED_OVERUSE_DAYS_THRESHOLD = 15;
 
 interface Notification {
   id: string;
-  type: 'sleep' | 'inactive';
+  type: 'sleep' | 'inactive' | 'med_overuse';
   title: string;
   message: string;
 }
@@ -53,6 +55,25 @@ export function useSmartNotifications(episodes: MigraineEpisode[]) {
       }
     }
 
+    // Medication overuse: 15+ days with medication in last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const cutoff = format(thirtyDaysAgo, 'yyyy-MM-dd');
+    const recentWithMeds = episodes.filter(
+      e => e.date >= cutoff && e.medications && e.medications.length > 0
+    );
+    if (recentWithMeds.length >= MED_OVERUSE_DAYS_THRESHOLD) {
+      const dismissed = localStorage.getItem(MED_OVERUSE_KEY);
+      if (dismissed !== today) {
+        active.push({
+          id: 'med_overuse',
+          type: 'med_overuse',
+          title: '⚠️ Uso excessivo de analgésicos',
+          message: `Você registrou medicamentos em ${recentWithMeds.length} dias nos últimos 30 dias. O uso frequente pode causar cefaleia por uso excessivo. Converse com seu médico.`,
+        });
+      }
+    }
+
     setNotifications(active);
   }, [episodes]);
 
@@ -60,6 +81,7 @@ export function useSmartNotifications(episodes: MigraineEpisode[]) {
     const today = format(new Date(), 'yyyy-MM-dd');
     if (id === 'sleep') localStorage.setItem(SLEEP_REMINDER_KEY, today);
     if (id === 'inactive') localStorage.setItem(INACTIVE_REMINDER_KEY, today);
+    if (id === 'med_overuse') localStorage.setItem(MED_OVERUSE_KEY, today);
     setNotifications(prev => prev.filter(n => n.id !== id));
   }, []);
 
