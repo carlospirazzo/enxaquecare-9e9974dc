@@ -16,7 +16,6 @@ import { DataMigration } from '@/components/DataMigration';
 import { TermsOfUse } from '@/components/TermsOfUse';
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
-import { useAuth } from '@/hooks/useAuth';
 
 const instructions = [
   {
@@ -64,7 +63,6 @@ const instructions = [
 const Index = () => {
   const navigate = useNavigate();
   const { isDark, toggle: toggleDark } = useDarkMode();
-  const { signOut } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -119,9 +117,6 @@ const Index = () => {
           </Button>
           <Button variant="ghost" size="icon" onClick={() => navigate('/relatorio')} title="Relatório">
             <FileBarChart className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={signOut} title="Sair">
-            <LogOut className="w-5 h-5" />
           </Button>
         </div>
       </header>
