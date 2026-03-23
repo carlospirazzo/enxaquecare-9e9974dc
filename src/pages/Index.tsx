@@ -118,9 +118,6 @@ const Index = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate('/relatorio')} title="Relatório">
             <FileBarChart className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={signOut} title="Sair">
-            <LogOut className="w-5 h-5" />
-          </Button>
         </div>
       </header>
 
