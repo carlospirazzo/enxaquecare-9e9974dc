@@ -68,7 +68,7 @@ const Index = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [migrationOpen, setMigrationOpen] = useState(false);
-  const [termsOpen, setTermsOpen] = useState(false);
+  
 
   const { episodes, addEpisode, removeEpisode, importEpisodes, getEpisode, getMonthEpisodes } = useMigraineStore();
 
