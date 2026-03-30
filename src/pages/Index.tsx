@@ -13,7 +13,7 @@ import { EpisodeForm } from '@/components/EpisodeForm';
 import { MonthlySummary } from '@/components/MonthlySummary';
 import { SmartNotifications } from '@/components/SmartNotifications';
 import { DataMigration } from '@/components/DataMigration';
-import { TermsOfUse } from '@/components/TermsOfUse';
+
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -68,7 +68,7 @@ const Index = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [migrationOpen, setMigrationOpen] = useState(false);
-  const [termsOpen, setTermsOpen] = useState(false);
+  
 
   const { episodes, addEpisode, removeEpisode, importEpisodes, getEpisode, getMonthEpisodes } = useMigraineStore();
 
@@ -109,7 +109,7 @@ const Index = () => {
           >
             <Mail className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => setTermsOpen(true)} title="Termos de uso">
+          <Button variant="ghost" size="icon" onClick={() => navigate('/termosdeuso')} title="Termos de uso">
             <ScrollText className="w-5 h-5" />
           </Button>
           <Button variant="ghost" size="icon" onClick={toggleDark} title={isDark ? 'Modo claro' : 'Modo escuro'}>
@@ -188,8 +188,6 @@ const Index = () => {
         onImport={importEpisodes}
       />
 
-      {/* Terms of Use Dialog */}
-      <TermsOfUse open={termsOpen} onClose={() => setTermsOpen(false)} />
 
       {/* Instructions Dialog */}
       <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
