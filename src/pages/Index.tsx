@@ -188,8 +188,6 @@ const Index = () => {
         onImport={importEpisodes}
       />
 
-      {/* Terms of Use Dialog */}
-      <TermsOfUse open={termsOpen} onClose={() => setTermsOpen(false)} />
 
       {/* Instructions Dialog */}
       <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
