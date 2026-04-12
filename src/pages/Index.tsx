@@ -16,7 +16,6 @@ import { DataMigration } from '@/components/DataMigration';
 
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
-import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 
 const instructions = [

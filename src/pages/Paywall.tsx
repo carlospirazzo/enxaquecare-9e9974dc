@@ -1,10 +1,8 @@
 import { motion } from 'framer-motion';
 import logoIcon from '@/assets/logo-icon.png';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Crown, Zap, Infinity, LogOut, CheckCircle2 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { Crown, Zap, Infinity, CheckCircle2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const features = [
@@ -17,10 +15,7 @@ const features = [
 ];
 
 const Paywall = () => {
-  const { signOut } = useAuth();
-
   const handlePurchase = (plan: 'monthly' | 'lifetime') => {
-    // This will be handled by Google Play / App Store billing
     toast({
       title: 'Compra via loja de apps',
       description: plan === 'monthly'
@@ -31,15 +26,9 @@ const Paywall = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img src={logoIcon} alt="EnxaqueCare" className="w-8 h-8" />
-          <span className="font-serif font-bold text-lg">EnxaqueCare</span>
-        </div>
-        <Button variant="ghost" size="sm" onClick={signOut} className="text-muted-foreground">
-          <LogOut className="w-4 h-4 mr-1" />
-          Sair
-        </Button>
+      <header className="px-4 py-4 flex items-center gap-2">
+        <img src={logoIcon} alt="EnxaqueCare" className="w-8 h-8" />
+        <span className="font-serif font-bold text-lg">EnxaqueCare</span>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center px-4 pb-8">
@@ -59,7 +48,6 @@ const Paywall = () => {
           </p>
         </motion.div>
 
-        {/* Features list */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -76,7 +64,6 @@ const Paywall = () => {
           </div>
         </motion.div>
 
-        {/* Plans */}
         <div className="w-full max-w-md space-y-3">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <Card
@@ -128,7 +115,7 @@ const Paywall = () => {
         </div>
 
         <p className="text-xs text-muted-foreground mt-6 text-center max-w-sm">
-          O pagamento será processado pela Google Play ou App Store. 
+          O pagamento será processado pela Google Play ou App Store.
           Ao assinar, você concorda com os{' '}
           <a href="https://enxaquecare.com/termosdeuso" target="_blank" rel="noopener noreferrer" className="text-primary underline">
             Termos de Uso

@@ -1,88 +1,66 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './useAuth';
+import { useState, useEffect, useCallback } from 'react';
 
-export type SubscriptionStatus = 'trial' | 'active' | 'lifetime' | 'expired' | 'loading';
+export type SubscriptionStatus = 'trial' | 'active' | 'lifetime' | 'expired';
 
-interface Subscription {
-  id: string;
+const TRIAL_KEY = 'enxaquecare_trial_start';
+const SUBSCRIPTION_KEY = 'enxaquecare_subscription';
+const TRIAL_DAYS = 7;
+
+interface SubscriptionData {
   status: SubscriptionStatus;
   plan: string;
-  trial_start: string;
-  trial_end: string;
-  current_period_start: string | null;
-  current_period_end: string | null;
 }
 
 export function useSubscription() {
-  const { user } = useAuth();
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [status, setStatus] = useState<SubscriptionStatus>('trial');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      setSubscription(null);
-      setLoading(false);
-      return;
-    }
-
-    const fetchSubscription = async () => {
-      const { data, error } = await supabase
-        .from('subscriptions')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching subscription:', error);
+    // Check for existing subscription
+    const sub = localStorage.getItem(SUBSCRIPTION_KEY);
+    if (sub) {
+      const parsed: SubscriptionData = JSON.parse(sub);
+      if (parsed.status === 'active' || parsed.status === 'lifetime') {
+        setStatus(parsed.status);
         setLoading(false);
         return;
       }
-
-      if (data) {
-        // Check if trial has expired
-        const now = new Date();
-        const trialEnd = new Date(data.trial_end);
-        
-        if (data.status === 'trial' && now > trialEnd) {
-          // Trial expired - update status
-          await supabase
-            .from('subscriptions')
-            .update({ status: 'expired' })
-            .eq('id', data.id);
-          
-          setSubscription({ ...data, status: 'expired' } as Subscription);
-        } else {
-          setSubscription(data as Subscription);
-        }
-      }
-
-      setLoading(false);
-    };
-
-    fetchSubscription();
-  }, [user]);
-
-  const isActive = subscription?.status === 'trial' || 
-                   subscription?.status === 'active' || 
-                   subscription?.status === 'lifetime';
-
-  const trialDaysLeft = subscription?.trial_end
-    ? Math.max(0, Math.ceil((new Date(subscription.trial_end).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
-    : 0;
-
-  const updateSubscription = async (status: string, plan: string) => {
-    if (!user || !subscription) return;
-    
-    const { error } = await supabase
-      .from('subscriptions')
-      .update({ status, plan })
-      .eq('id', subscription.id);
-
-    if (!error) {
-      setSubscription(prev => prev ? { ...prev, status: status as SubscriptionStatus, plan } : null);
     }
-  };
 
-  return { subscription, loading, isActive, trialDaysLeft, updateSubscription };
+    // Initialize or check trial
+    let trialStart = localStorage.getItem(TRIAL_KEY);
+    if (!trialStart) {
+      trialStart = new Date().toISOString();
+      localStorage.setItem(TRIAL_KEY, trialStart);
+    }
+
+    const elapsed = Date.now() - new Date(trialStart).getTime();
+    const trialMs = TRIAL_DAYS * 24 * 60 * 60 * 1000;
+
+    if (elapsed >= trialMs) {
+      setStatus('expired');
+    } else {
+      setStatus('trial');
+    }
+
+    setLoading(false);
+  }, []);
+
+  const trialDaysLeft = (() => {
+    const trialStart = localStorage.getItem(TRIAL_KEY);
+    if (!trialStart) return TRIAL_DAYS;
+    const elapsed = Date.now() - new Date(trialStart).getTime();
+    return Math.max(0, Math.ceil((TRIAL_DAYS * 24 * 60 * 60 * 1000 - elapsed) / (1000 * 60 * 60 * 24)));
+  })();
+
+  const isActive = status === 'trial' || status === 'active' || status === 'lifetime';
+
+  const activateSubscription = useCallback((plan: 'monthly' | 'lifetime') => {
+    const subStatus: SubscriptionStatus = plan === 'lifetime' ? 'lifetime' : 'active';
+    const data: SubscriptionData = { status: subStatus, plan };
+    localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify(data));
+    setStatus(subStatus);
+  }, []);
+
+  return { status, loading, isActive, trialDaysLeft, activateSubscription };
 }
