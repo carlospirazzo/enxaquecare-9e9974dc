@@ -65,7 +65,8 @@ const instructions = [
 const Index = () => {
   const navigate = useNavigate();
   const { isDark, toggle: toggleDark } = useDarkMode();
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const { signOut } = useAuth();
+  const { trialDaysLeft, subscription } = useSubscription();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
