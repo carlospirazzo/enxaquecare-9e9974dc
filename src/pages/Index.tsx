@@ -109,7 +109,7 @@ const Index = () => {
           >
             <Mail className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => navigate('/termosdeuso')} title="Termos de uso">
+          <Button variant="ghost" size="icon" onClick={() => window.open('https://enxaquecare.com/termosdeuso', '_blank')} title="Termos de uso">
             <ScrollText className="w-5 h-5" />
           </Button>
           <Button variant="ghost" size="icon" onClick={toggleDark} title={isDark ? 'Modo claro' : 'Modo escuro'}>
