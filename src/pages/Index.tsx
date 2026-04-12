@@ -16,6 +16,8 @@ import { DataMigration } from '@/components/DataMigration';
 
 import { useMigraineStore } from '@/hooks/useMigraineStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const instructions = [
   {
@@ -63,6 +65,8 @@ const instructions = [
 const Index = () => {
   const navigate = useNavigate();
   const { isDark, toggle: toggleDark } = useDarkMode();
+  const { signOut } = useAuth();
+  const { trialDaysLeft, subscription } = useSubscription();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -118,7 +122,17 @@ const Index = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate('/relatorio')} title="Relatório">
             <FileBarChart className="w-5 h-5" />
           </Button>
+          <Button variant="ghost" size="icon" onClick={signOut} title="Sair">
+            <LogOut className="w-5 h-5" />
+          </Button>
         </div>
+        {subscription?.status === 'trial' && trialDaysLeft > 0 && (
+          <div className="max-w-lg mx-auto px-4 pb-2">
+            <div className="bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-lg text-center">
+              ⏳ Teste gratuito: {trialDaysLeft} {trialDaysLeft === 1 ? 'dia restante' : 'dias restantes'}
+            </div>
+          </div>
+        )}
       </header>
 
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6 pb-20">
